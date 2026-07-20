@@ -36,7 +36,7 @@
 
             <div class="relative bg-white p-2 sm:p-3 rounded-[2rem] sm:rounded-[2.5rem] shadow-[0_32px_64px_-15px_rgba(0,0,0,0.1)] border border-slate-100 rotate-1 lg:rotate-2">
                 <img class="rounded-[1.5rem] sm:rounded-[2rem] w-full object-cover aspect-[4/3] sm:aspect-square lg:aspect-[4/3]"
-                     src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1470&auto=format&fit=crop"
+                     src="{{ asset('images/shebok_hero_section_image.jpeg') }}"
                      alt="Professional Healthcare">
 
                 <!-- Status Badge -->
