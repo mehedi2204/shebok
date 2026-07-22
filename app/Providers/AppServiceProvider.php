@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use App\Models\Setting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,8 +22,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \Illuminate\Support\Facades\View::composer('*', function ($view) {
-            $settings = \App\Models\Setting::pluck('value', 'key')->toArray();
+        // Force HTTPS URLs in production (useful behind Nginx Proxy Manager)
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
+
+        // Share global settings with all views
+        View::composer('*', function ($view) {
+            $settings = Setting::pluck('value', 'key')->toArray();
             $view->with('globalSettings', $settings);
         });
     }

@@ -1,0 +1,57 @@
+services:
+
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+            args:
+                user: sam
+                uid: 1000
+
+        image: shebok-app
+
+        container_name: shebok-app
+
+        restart: always
+
+        working_dir: /var/www
+
+        volumes:
+            - ./:/var/www
+
+        networks:
+            - shebok-network
+            - shared-network
+
+        healthcheck:
+            test: ["CMD", "php", "-v"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+
+    nginx:
+        image: nginx:alpine
+
+        container_name: shebok-nginx
+
+        restart: always
+
+        expose:
+            - "80"
+
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d:/etc/nginx/conf.d
+
+        depends_on:
+            - app
+
+        networks:
+            - shebok-network
+            - shared-network
+
+networks:
+    shebok-network:
+
+    shared-network:
+        external: true
